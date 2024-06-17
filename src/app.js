@@ -3,7 +3,6 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/users.routes.js"
 
-
 const app = express();
 
 app.use(cors({
@@ -11,9 +10,9 @@ app.use(cors({
     Credential: true
 }))
 
-app.use(express.json({limit: "16kb"}))
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
-app.use(express.urlencoded({extended: true , limit : "16kb"}))
 app.use(express.static("public"))
 
 app.use("/api/v2/users", userRouter);

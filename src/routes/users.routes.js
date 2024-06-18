@@ -4,6 +4,6 @@ import {upload} from "../middlewares/multer.middlewares.js"
 
 const router = Router();
 
-router.route("/register", upload.single("profileImage")).post(registerUser)
+router.route("/register").post(upload.single("profileImage") , registerUser)
 
 export default router

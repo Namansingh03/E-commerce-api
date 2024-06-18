@@ -28,12 +28,16 @@ const userSchema = mongoose.Schema({
    profileImage : {
     type : String,
    },
+   orderHistory : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "Products"
+    },
    refreshToken : {
     type : String,
    },
 },{timestamps : true});
 
-userSchema.pre("save" , async function (){
+userSchema.pre("save" , async function (next){
 
     if(!this.isModified("password")) return next();
 
@@ -46,7 +50,7 @@ userSchema.methods.isPasswordCorrect = async function(password){
     return await bcrypt.compare(password , this.password);
 };
 
-userSchema.methods.generateAccessToken = async function(){
+userSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         {
             _id: this._id,
@@ -60,7 +64,7 @@ userSchema.methods.generateAccessToken = async function(){
     )
 };
 
-userSchema.methods.generateRefreshToken = async function(){
+userSchema.methods.generateRefreshToken = function(){
     return jwt.sign(
         {
             _id : this._id
